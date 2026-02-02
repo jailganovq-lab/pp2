@@ -1,3 +1,29 @@
+#203
+sum of input numbers
+
+a=int(input())
+numbers = list(map(int,input().split()))
+count = 0
+for n in numbers:
+    count +=n
+print(count)
+
+#205 
+2 nin darejesi
+a = int(input())
+n = 1
+# n саны а-дан асып кетпегенше циклді жүргіземіз
+while n < a:
+    n *= 2
+# Цикл біткенде n саны не a-ға тең болады, не одан асып кетеді
+if n == a:
+    print("YES")
+else:
+    print("NO")
+
+
+
+
 #213
 жай санды табу
 n = int(input())
@@ -15,3 +41,195 @@ else:
         print("Yes")
     else:
         print("No")
+
+№214
+сандардын ен кышкентай коп кайталанганын табу керек
+
+from collections import Counter
+
+n = int(input())
+nums = list(map(int, input().split()))
+
+counts = Counter(nums)
+
+# Алдымен жиілігі бойынша (кему ретімен -x[1]), 
+# сосын санның өзі бойынша (өсу ретімен x[0]) сұрыптаймыз
+result = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+
+print(result[0][0])
+
+#215
+attendance (the surname should write only once)
+# 1. Студенттер санын оқимыз
+n = int(input())
+
+# 2. Фамилияларды сақтау үшін бос жиын (set) құрамыз
+surnames = set()
+
+# 3. Әр фамилияны оқып, жиынға қосамыз
+for i in range(n):
+    name = input().strip()
+    surnames.add(name)
+
+# 4. Жиынның ұзындығын (яғни бірегей есімдер санын) шығарамыз
+print(len(surnames))
+
+
+#216
+if number repeat then "NO"
+n = int(input())
+a = list(map(int, input().split()))
+
+seen = []
+
+for x in a:
+    if x not in seen:
+        print("YES")
+        seen.append(x)
+    else:
+        print("NO")
+
+
+№217
+3 рет бирдей болатын номерды санау
+
+from collections import Counter
+
+# 1. Нөмірлер санын оқимыз
+n = int(input())
+
+# 2. Барлық нөмірлерді тізімге жинаймыз
+numbers = []
+for i in range(n):
+    numbers.append(input())
+
+# 3. Әр нөмірдің неше рет келгенін санаймыз
+counts = Counter(numbers)
+
+# 4. Дәл 3 рет кездескендерін анықтап, санаймыз
+ans = 0
+for x in counts.values():
+    if x == 3:
+        ans += 1
+
+print(ans)
+
+
+
+№218
+Бұл есепте саған берілген сөздердің (string) ішінен тек қайталанбайтын (бірегей) сөздерді тауып, олардың ең бірінші кездескен орнын (индексін) шығару керек. Сондай-ақ, нәтижені алфавит бойынша (lexicographical order) реттеп шығару қажет.
+n = int(input())
+words = []
+
+# 1. Барлық сөздерді тізімге жинаймыз
+for i in range(n):
+    words.append(input().strip())
+
+# 2. Тек қана әртүрлі сөздерді алып, оларды алфавитпен реттейміз
+unique_sorted_words = sorted(set(words))
+
+# 3. Әр сөзді және оның бірінші кездескен орнын шығарамыз
+for s in unique_sorted_words:
+    # index() 0-ден бастайды, сондықтан 1 қосамыз
+    first_pos = words.index(s) + 1
+    print(s, first_pos)
+
+
+№219
+Бұл есепте саған Аиданың бірнеше күн бойы көрген дорамаларының тізімі беріледі. Сенің міндетің — әр дораманың атын және оның барлық қаралған серияларының қосындысын табу. Соңында дорамаларды алфавит бойынша (lexicographical order) шығару керек.
+# 1. Күндер санын оқимыз
+n = int(input())
+
+# 2. Мәліметтерді сақтау үшін бос сөздік құрамыз
+dorama_stats = {}
+
+for i in range(n):
+    # Дорама атын және серия санын оқып аламыз
+    line = input().split()
+    name = line[0]
+    episodes = int(line[1])
+    
+    # Егер бұл дорама бұрын кездессе, серияларын қосамыз
+    if name in dorama_stats:
+        dorama_stats[name] += episodes
+    # Егер жаңа дорама болса, сөздікке жаңадан қосамыз
+    else:
+        dorama_stats[name] = episodes
+
+# 3. Дорама аттарын алфавит бойынша сұрыптаймыз
+sorted_names = sorted(dorama_stats.keys())
+
+# 4. Нәтижені шығарамыз
+for name in sorted_names:
+    print(name, dorama_stats[name])
+
+
+
+№220
+Бұл есептің негізгі мақсаты — қарапайым мәліметтер қорын (database) жасап шығу. Сенің бағдарламаң виртуалды "құжат" (document) ретінде жұмыс істеуі керек.
+
+Есептің басты ережелері мынадай:
+
+1. "Кілт - Мән" (Key-Value) принципі
+Бұл жерде әрбір мәліметтің өз "аты" (кілт) және сол атқа сәйкес келетін "мәні" болады.
+
+Мысалы: аты — бұл кілт, ал Айдос — бұл мән.
+
+2. Екі түрлі команда бар:
+Бағдарламаң мына екі бұйрықты орындауы тиіс:
+
+set [кілт] [мән]: Құжатқа жаңа мәлімет қосу.
+
+Маңызды ереже: Егер сен берген кілт құжатта бұрыннан бар болса, ескі мән өшіп, оның орнына жаңа мән жазылады (update).
+
+Мысалы: Алдымен set телефон 707 дедің, кейін set телефон 777 десең, бағдарлама "телефон" деген кілтке "777"-ні сақтап қояды.
+
+get [кілт]: Құжаттан мәліметті сұрау.
+
+Егер ол кілт бар болса: Оған сәйкес келетін мәнді экранға шығар.
+
+Егер ол кілт жоқ болса: Арнайы қате туралы мәтінді шығар: "KE: no key [КІЛТ] found in the document".
+
+3. Мысалмен түсіндірме:
+Елестетші, сенің құжатың бос:
+
+set s0m3_c001_k3y s0m3_c001_v41u3 — Құжатқа бірінші мәлімет түсті.
+
+get some_key — Сен "some_key" дегенді сұрадың, бірақ ол әлі құжатта жоқ. Сондықтан бағдарлама "KE: no key some_key found..." деп айқайлайды.
+
+set some_key some_value — Енді "some_key" қосылды.
+
+get some_key — Енді сұрасаң, ол саған "some_value" деп жауап береді.
+
+Қысқаша түйін:
+Сенен талап етілетіні — Dictionary (сөздік) құрылымын пайдаланып, мәліметтерді сақтау, жаңарту және оларды қайта тауып беру.
+
+Берілгені түсінікті болды ма? Егер кодтағы split() немесе f-string сияқты бөліктері түсініксіз болса, оны да айтып бере аламын.
+
+import sys
+
+# Барлық жолдарды бірден оқып аламыз (жылдамырақ болу үшін)
+input_data = sys.stdin.read().splitlines()
+
+if input_data:
+    n = int(input_data[0])
+    document = {}
+
+    for i in range(1, n + 1):
+        line = input_data[i].split()
+        if not line:
+            continue
+            
+        cmd_type = line[0]
+        key = line[1]
+
+        if cmd_type == "set":
+            value = line[2]
+            document[key] = value
+        elif cmd_type == "get":
+            if key in document:
+                print(document[key])
+            else:
+                # Тексттің дәлме-дәл екеніне көз жеткіз
+                print(f"KE: no key {key} found in the document")
+
